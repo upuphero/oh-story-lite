@@ -1,6 +1,6 @@
 # Oh Story Lite：双 Skill 自动同步仓库实施计划
 
-> **状态**：本地 M0～M2、M3 工作流、M4 安装器及 DSH 原始 API 隔离发现已完成；M3 远端、M4 真实会话/模型验收待实施  
+> **状态**：已发布 GitHub Public Repo；CI 与正式 Release 无变化同步已远端通过。M4 真实会话/模型验收及真实上游更新 PR 的远端交付仍待实际发生。  
 > **编写日期**：2026-10-21  
 > **建议仓库名**：`oh-story-lite`（GitHub Public Repository）  
 > **目标用户环境**：Windows + DeepSeek Harness（DSH）  
@@ -13,6 +13,8 @@
 > **M4 安装器实施记录（2026-10-22）**：已实现 `install.ps1` 的本地安装、备份、完整升级、精确回滚和事务恢复；98 项测试通过，包括新增 28 项安装器测试。PowerShell 5.1 / 7 及 junction 拒绝均在隔离目录验证，未安装到真实 Skills 目录。详见 [docs/m4-validation.md](docs/m4-validation.md)。
 
 > **M4 DSH 发现记录（2026-10-23）**：本机 DSH `0.2.1-rc.2` 原模块在最小隔离 Context 中通过 9 项发现、加载及优先级检查；完整回归 107 项通过。缺失专业 preset 返回 not-found；已加载 Skill 的 solo/direct 约定不是运行时自动路由，模型遵循尚未验证。未改真实 Skills 或运行模型写作。详见 [docs/dsh-discovery.md](docs/dsh-discovery.md)。
+
+> **公开部署（2026-10-23）**：用户已授权创建并发布 [upuphero/oh-story-lite](https://github.com/upuphero/oh-story-lite)，明确保留自动更新 PR、人工审核合并。GitHub CI 的 Ubuntu / Windows / actionlint 均通过，首次手动同步确认无相关变化、不生成 PR。见 [docs/github-deployment.md](docs/github-deployment.md)。早期“未发布”记录保留为各阶段历史范围。
 
 ## 0. TL;DR：最终想得到什么
 
@@ -335,9 +337,9 @@ Copy-Item (Join-Path $src 'skills\story-deslop') $dst -Recurse
 
 ### Phase 0：仓库初始化
 
-- [ ] 新建 GitHub **Public** Repo：`oh-story-lite`，默认分支 `main`。
-- [ ] 启用 Actions；设置 `Allow GitHub Actions to create and approve pull requests`。
-- [ ] 建立仓库规则：对 `main` 禁止自动直推；需要 PR 和质量检查。
+- [x] 新建 GitHub **Public** Repo：`upuphero/oh-story-lite`，默认分支 `main`。
+- [x] 启用 Actions；设置 `Allow GitHub Actions to create and approve pull requests`，默认 Token 权限为 read。
+- [x] 建立 main 的 PR 和质量检查保护，不启用自动合并。
 - [x] 放入 `README.md`、`NOTICE.md`、`LICENSE`、`plan.md`、`.gitignore`。
 - [x] 明确 `.gitignore` 排除 `.env`、个人日志、本地工作区、小说正文等不应出现的文件。
 
@@ -365,7 +367,8 @@ Copy-Item (Join-Path $src 'skills\story-deslop') $dst -Recurse
 - [x] 锁定第三方 Action 的完整 commit SHA，固定 actionlint 版本与下载校验和。
 - [x] 本地测试无变更、目标 Skill 有变更、仅其他 Skill 变化三种情形；目标更新完成真实封包/受限替换重放。
 - [x] 查阅 GitHub 官方文档，记录 `GITHUB_TOKEN` 机器人 PR 的 CI 审批规则。
-- [ ] 获准接入远端后验证：固定 PR 创建/更新、托管 Ubuntu / Windows 结果及实际 Token 审批行为。
+- [x] 远端验证托管 Ubuntu / Windows / actionlint 检查，以及无变化同步跳过 PR。
+- [ ] 后续真实上游相关变化发生时，核对固定 PR 创建/更新和实际 Token 审批行为；不为验收制造虚假更新 PR。
 
 ### Phase 4：Windows / DSH 验证
 

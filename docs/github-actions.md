@@ -2,6 +2,8 @@
 
 本仓库通过 [CI](https://github.com/upuphero/oh-story-lite/actions/workflows/ci.yml) 和 [上游同步](https://github.com/upuphero/oh-story-lite/actions/workflows/sync-upstream.yml) 两个 GitHub Actions 工作流运行检查与更新。历史本地验证数据见 `m3-validation.md`；远端最新执行状态以 Actions 页面为准。
 
+2026-10-23 已完成公开部署，首次托管 CI 与无变化同步均成功，见 [部署记录](github-deployment.md)。真实上游更新 PR 的写入路径尚未由一次真实更新触发。
+
 ## 独立 CI
 
 `.github/workflows/ci.yml` 在 `pull_request`、`push(main)` 和手动触发时运行：
