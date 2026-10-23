@@ -1,0 +1,115 @@
+name: Sync upstream Oh Story skills
+
+on:
+  schedule:
+    - cron: '23 9 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: oh-story-upstream-sync
+  cancel-in-progress: false
+
+env:
+  PYTHONUTF8: '1'
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  prepare-and-validate:
+    if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    permissions:
+      contents: read
+    outputs:
+      changed: ${{ steps.prepare.outputs.changed }}
+      bundle_sha256: ${{ steps.prepare.outputs.bundle_sha256 }}
+    steps:
+      - name: Checkout default-branch event commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.11'
+      - name: Set up Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - name: Prepare, fully validate, and seal candidate
+        id: prepare
+        shell: bash
+        run: >-
+          python scripts/ci_sync.py
+          --work-dir "$RUNNER_TEMP/oh-story-sync"
+          --github-output "$GITHUB_OUTPUT"
+      - name: Upload only sealed bundle
+        if: steps.prepare.outputs.changed == 'true'
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: oh-story-candidate
+          path: ${{ runner.temp }}/oh-story-sync/snapshot.tar
+          if-no-files-found: error
+          retention-days: 3
+
+  create-update-pr:
+    needs: prepare-and-validate
+    if: >-
+      github.ref == format('refs/heads/{0}', github.event.repository.default_branch) &&
+      needs.prepare-and-validate.outputs.changed == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout current trusted default branch
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.11'
+      - name: Download same-run candidate outside checkout
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: oh-story-candidate
+          path: ${{ runner.temp }}/oh-story-incoming
+          digest-mismatch: error
+      - name: Recheck and apply allowlisted files without executing upstream
+        id: apply
+        shell: bash
+        env:
+          EXPECTED_BUNDLE_SHA256: ${{ needs.prepare-and-validate.outputs.bundle_sha256 }}
+          EXPECTED_BASE_SHA: ${{ github.sha }}
+        run: >-
+          python scripts/sync_artifact.py
+          --artifact "$RUNNER_TEMP/oh-story-incoming/snapshot.tar"
+          --expected-sha256 "$EXPECTED_BUNDLE_SHA256"
+          --expected-base-sha "$EXPECTED_BASE_SHA"
+          --body-file "$RUNNER_TEMP/oh-story-pr-body.md"
+          --output-file "$RUNNER_TEMP/oh-story-pr.json"
+          --github-output "$GITHUB_OUTPUT"
+      - name: Create or update the single review PR
+        if: steps.apply.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
+        with:
+          token: ${{ github.token }}
+          base: ${{ github.event.repository.default_branch }}
+          branch: bot/sync-oh-story
+          delete-branch: false
+          add-paths: |
+            skills/story-long-write
+            skills/story-deslop
+            LICENSE
+            upstream-lock.json
+          commit-message: ${{ steps.apply.outputs.title }}
+          title: ${{ steps.apply.outputs.title }}
+          body-path: ${{ runner.temp }}/oh-story-pr-body.md

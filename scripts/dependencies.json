@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "non_asset_names": {
+    "Node.js": "Runtime product name, not a local JavaScript file.",
+    "writer_prompt.md": "Generated private book artifact under .story/work/第NNN章/."
+  },
+  "runtime_dependencies": {
+    "story-long-write/scripts/build_architect_brief.py": [
+      "scripts/outline_view.py",
+      "references/workflow-setup.md",
+      "references/workflow-volume.md",
+      "references/workflow-outline.md",
+      "references/artifact-protocols.md",
+      "references/character-basics.md",
+      "references/character-relations.md",
+      "references/long-genre-mechanics.md",
+      "references/reader-contract-and-progression.md",
+      "references/outline-methods.md",
+      "references/long-chapter-hooks.md",
+      "references/plot-core-methods.md",
+      "references/opening-design.md",
+      "references/female-audience-writing.md",
+      "references/emotional-arc-design.md",
+      "references/long-reversal.md",
+      "references/cross-book-recall.md"
+    ],
+    "story-long-write/scripts/build_writer_prompt.py": [
+      "scripts/outline_view.py",
+      "scripts/author_memory_commit.py",
+      "references/genre-prose-cards"
+    ],
+    "story-long-write/scripts/storyctl.py": [
+      "scripts/wordcount_core.py",
+      "scripts/tracking_commit.py",
+      "scripts/check-ai-patterns.js",
+      "scripts/check-degeneration.js",
+      "scripts/check-outline-copy.js",
+      "scripts/normalize-punctuation.js"
+    ],
+    "story-long-write/scripts/tracking_commit.py": ["scripts/wordcount_core.py"],
+    "story-long-write/scripts/check-outline-contract.js": ["references/workflow-outline.md"],
+    "story-long-write/scripts/check-ai-patterns.js": ["scripts/style-whitelist.js"],
+    "story-long-write/scripts/normalize-punctuation.js": ["scripts/style-whitelist.js"],
+    "story-deslop/scripts/check-ai-patterns.js": ["scripts/style-whitelist.js"],
+    "story-deslop/scripts/normalize-punctuation.js": ["scripts/style-whitelist.js"]
+  },
+  "optional_missing_assets": {
+    "story-long-write/scripts/check-outline-contract.js": {
+      "references/outline-reverse-rules.md": "Upstream filters absent templates with existsSync; workflow-outline.md is bundled."
+    }
+  },
+  "optional_skill_routes": [
+    "story-setup", "story-import", "story-review", "story-short-write", "story-long-analyze", "story-long-scan"
+  ]
+}
