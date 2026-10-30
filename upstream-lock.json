@@ -1,23 +1,23 @@
 {
   "schema_version": 1,
   "upstream": "zenstory-ai/oh-story-claudecode",
-  "release_tag": "v0.9.0",
-  "commit_sha": "74080143dd1ac9a39a930fafd99a0dbbe61b946a",
+  "release_tag": "v0.9.2",
+  "commit_sha": "f08a66ddd5995e4c02e1c9f9c04dca25d957cb37",
   "paths": [
     "skills/story-long-write",
     "skills/story-deslop"
   ],
   "digest_encoding": "sorted-path-utf8-u64be-length/raw-bytes-u64be-length-v1",
-  "content_digest_sha256": "f964993429610efc1d1f1918269300a3e65f4fb8f6da2d7811d258fd188bbd45",
+  "content_digest_sha256": "445520d8109496d85af50ce3a68a6ac94f5368ef162dcfdc08263ca5233c8e71",
   "skill_digests_sha256": {
-    "skills/story-long-write": "84b883f27f09b876297dae046913d97ebe67162c6eec10387160b2cfcede58cb",
-    "skills/story-deslop": "e55515f17c8039ed185a94867a1d9d1d6ce5bae6e3a2f1f9b3af53d07a42f32c"
+    "skills/story-long-write": "aef6934f9c4a8dde04f80840a05c5262bc6efc43be6b350a1527a0b347d8a91d",
+    "skills/story-deslop": "6b8e95175cc072b35e672d8572434777466b292297495b8420d35e1eb9d3ea03"
   },
   "license_sha256": "52c71355258924a967927780245f70677b38ff7d073c03f9096df33888f34653",
   "files": {
     "skills/story-deslop/SKILL.md": {
-      "bytes": 12083,
-      "sha256": "f875bc2727868b8948aa777ac2ff4d131ab3bb5baa14ce01a2214aaefc1ecbe0"
+      "bytes": 11930,
+      "sha256": "f2d5afbce2232e65bb57e1215d422952f9b7146bb3f9582c1010345b9bc36522"
     },
     "skills/story-deslop/references/agent-calls.md": {
       "bytes": 1258,
@@ -64,12 +64,12 @@
       "sha256": "398018c5acff324009493d1e7661f8864bf62d6d95616d00fa5141cc86eb3908"
     },
     "skills/story-long-write/SKILL.md": {
-      "bytes": 14461,
-      "sha256": "d2482ef0ebeec1a595fba087585d72485ad7a358d08867894f5220c24abc332b"
+      "bytes": 14458,
+      "sha256": "a614c5ff0d8e4f91ed2061d3617318ad254200d85396fed529d7abe2d1fcb670"
     },
     "skills/story-long-write/references/agent-calls.md": {
-      "bytes": 7474,
-      "sha256": "9d0940be3fba85a4e7e2ae731b321ebe1b73ab42417b4d71eaf009ffd8ad621e"
+      "bytes": 7373,
+      "sha256": "9a64ca17401a81046419e1a5b7da0097164e0ccff0273a2b4394697ce94854eb"
     },
     "skills/story-long-write/references/artifact-protocols.md": {
       "bytes": 14888,
@@ -336,8 +336,8 @@
       "sha256": "4d175f52d70d1b81991bb0a24dbc4ff690ce6a8cbfaf0267ec57a123b5d57594"
     },
     "skills/story-long-write/references/tracking-transaction.md": {
-      "bytes": 15303,
-      "sha256": "b80a3e238ba5d16bec4db75f8ebbd5cd2f14d46dc2ccc88b24bf1aec43810e8b"
+      "bytes": 15618,
+      "sha256": "ff24a293ce055364398a2576cf34ea5730c8ec1d423a688962c774a546ab2c9c"
     },
     "skills/story-long-write/references/workflow-chapter.md": {
       "bytes": 14891,
@@ -416,8 +416,8 @@
       "sha256": "398018c5acff324009493d1e7661f8864bf62d6d95616d00fa5141cc86eb3908"
     },
     "skills/story-long-write/scripts/tracking_commit.py": {
-      "bytes": 83785,
-      "sha256": "a20f1bd8d4bd560b8fcc5b85530f62684edb434630c39ba9ebebc13d560bfda0"
+      "bytes": 83993,
+      "sha256": "42cce59cd653d29504045d82f04756c2be36fb448c987f66f1cbd8b7539dd300"
     },
     "skills/story-long-write/scripts/wordcount_core.py": {
       "bytes": 18338,
